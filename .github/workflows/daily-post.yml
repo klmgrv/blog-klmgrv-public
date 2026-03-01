@@ -1,0 +1,26 @@
+name: Daily Blog Post
+on:
+  schedule:
+    - cron: "0 2 * * *" # 09:00 Asia/Jakarta (UTC+7) = 02:00 UTC
+permissions:
+  contents: write
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v2
+        with:
+          hugo-version: 0.157.0
+      - name: Build site
+        run: hugo -s . -d docs
+      - name: Commit and push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs
+          git commit -m "Publish daily blog post: $(date -u +%Y-%m-%d)" || true
+          git push origin main
