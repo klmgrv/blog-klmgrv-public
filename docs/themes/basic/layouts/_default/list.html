@@ -1,0 +1,12 @@
+<!doctype html>
+<html>
+<head><meta charset="utf-8"><title>Archive</title></head>
+<body>
+  <h1>Archive</h1>
+  <ul>
+  {{ range .Pages }}
+    <li><a href="{{ .RelPermalink }}">{{ .Title }}</a> - {{ .Date.Format "2006-01-02" }}</li>
+  {{ end }}
+  </ul>
+</body>
+</html>
